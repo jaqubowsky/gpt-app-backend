@@ -6,6 +6,8 @@ const { isAuthenticated } = require("../middlewares/authMiddleware");
 (async () => {
   const controller = await userController();
 
+  router.get("/me", isAuthenticated, controller.getMe);
+  router.get("/rooms", isAuthenticated, controller.getRooms)
   router.post("/register", controller.signup);
   router.post("/login", controller.login);
   router.post("/logout", isAuthenticated, controller.logout);
