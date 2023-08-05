@@ -32,7 +32,7 @@ const addUserToRoom = async (req, res) => {
     const { id } = req.params;
     const { userId } = req.body;
 
-    const room = await Room.findById(id).exec(); //
+    const room = await Room.findById(id).exec();
 
     const user = await User.findById(userId).exec();
 
