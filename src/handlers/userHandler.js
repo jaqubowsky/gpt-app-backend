@@ -1,4 +1,5 @@
 const User = require("../models/userModel.js");
+const Room = require("../models/roomModel.js");
 const {
   genPassword,
   validatePassword,
@@ -103,9 +104,47 @@ const deleteAccount = async (req, res) => {
   }
 };
 
+const getMe = async (req, res) => {
+  try {
+    const user = req.user;
+
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        error: "You are not logged in.",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+};
+
+const getUserRooms = async (req, res) => {
+  try {
+    const { id } = req.user;
+
+    const rooms = await Room.find({ users: id }).exec();
+
+    res.status(200).json({ success: true, rooms });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+};
+
 module.exports = {
   register,
   login,
   logout,
   deleteAccount,
+  getMe,
+  getUserRooms,
 };
