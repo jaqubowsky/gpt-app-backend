@@ -1,4 +1,3 @@
-
 const passport = require("passport");
 
 function isAuthenticated(req, res, next) {
@@ -7,7 +6,7 @@ function isAuthenticated(req, res, next) {
       return res.status(401).json({ message: "Unauthorized" });
     }
     req.user = user;
-    
+
     return next();
   })(req, res, next);
 }
