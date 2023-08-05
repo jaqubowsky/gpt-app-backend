@@ -22,6 +22,18 @@ const userSchema = new Schema(
         type: String,
       },
     },
+    rooms: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "room",
+      },
+    ],
+    messages: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "message",
+      },
+    ],
   },
   { timestamps: true }
 );
