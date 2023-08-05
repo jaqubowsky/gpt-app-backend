@@ -1,5 +1,4 @@
 const { PUSHER_APP_ID, PUSHER_KEY, PUSHER_SECRET } = require("./config");
-
 const Pusher = require("pusher");
 
 const pusher = new Pusher({
