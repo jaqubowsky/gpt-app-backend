@@ -1,5 +1,6 @@
 const Message = require("../models/messageModel.js");
 const Room = require("../models/roomModel.js");
+const pusher = require("../config/pusher.js");
 
 const createMessage = async (req, res) => {
   try {
@@ -21,6 +22,10 @@ const createMessage = async (req, res) => {
     room.messages.push(message);
 
     await room.save();
+
+    pusher.trigger("chat-message", "new-message", {
+      message,
+    });
 
     res.status(201).json({ success: true, message });
   } catch (err) {
