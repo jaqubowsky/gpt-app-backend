@@ -1,4 +1,5 @@
 const Room = require("../models/roomModel.js");
+const User = require("../models/userModel.js");
 
 const createRoom = async (req, res) => {
   try {
@@ -27,14 +28,15 @@ const getRoomMessages = async (req, res) => {
   }
 };
 
-const addUserToRoom = async (req, res) => {
+const addUserToRoom = async (req, res) => {  
   try {
     const { id } = req.params;
     const { userId } = req.body;
-
+    
     const room = await Room.findById(id).exec();
 
     const user = await User.findById(userId).exec();
+
 
     if (!room) {
       return res.status(404).json({ success: false, error: "Room not found" });
