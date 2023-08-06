@@ -28,7 +28,7 @@ app.use(urlencoded({ extended: true }));
 app.use(json());
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://api.pusherapp.com/"],
+    origin: "http://localhost:3000",
     credentials: true,
   })
 );
