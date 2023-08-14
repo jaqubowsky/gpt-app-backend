@@ -28,18 +28,35 @@ const getRoomMessages = async (req, res) => {
   }
 };
 
-const addUserToRoom = async (req, res) => {  
+const addUserToRoom = async (req, res) => {
   try {
     const { id } = req.params;
-    const { userId } = req.body;
-    
+    const { email } = req.body;
+
     const room = await Room.findById(id).exec();
-
-    const user = await User.findById(userId).exec();
-
 
     if (!room) {
       return res.status(404).json({ success: false, error: "Room not found" });
+    }
+
+    const user = await User.findOne({ email }).exec();
+
+    const userInRoom = room.users.find((user) => user.email === email);
+
+    if (userInRoom) {
+      return res
+        .status(400)
+        .json({ success: false, error: "User already in room" });
+    }
+
+    if (room.users.length >= 2) {
+      return res
+        .status(400)
+        .json({ success: false, error: "Room can only fit 2 users." });
+    }
+
+    if (!user) {
+      return res.status(404).json({ success: false, error: "User not found" });
     }
 
     room.users.push(user);
