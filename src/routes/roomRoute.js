@@ -6,7 +6,7 @@ const roomController = require("../controlers/roomController");
   const controller = await roomController();
 
   router.post("/create", controller.create);
-  router.get("/:id", controller.getMessages);
+  router.get("/messages/:id", controller.getMessages);
   router.post("/add/:id", controller.addUser);
 })();
 
