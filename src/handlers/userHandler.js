@@ -132,7 +132,9 @@ const getUserRooms = async (req, res) => {
   try {
     const { id } = req.user;
 
-    const rooms = await Room.find({ users: id }).exec();
+    const rooms = await Room.find({ users: id })
+      .populate("users", "email _id")
+      .exec();
 
     res.status(200).json({ success: true, rooms });
   } catch (err) {
