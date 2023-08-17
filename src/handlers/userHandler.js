@@ -133,10 +133,39 @@ const getUserRooms = async (req, res) => {
     const { id } = req.user;
 
     const rooms = await Room.find({ users: id })
-      .populate("users", "email _id")
+      .populate("users", "email username _id")
+      .populate("owner", "email username _id")
       .exec();
 
     res.status(200).json({ success: true, rooms });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+};
+
+const leaveRoom = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const room = await Room.findById(id).exec();
+
+    if (!room) {
+      return res.status(404).json({ success: false, error: "Room not found" });
+    }
+
+    const userIndex = room.users.findIndex((user) => user == req.user.id);
+
+    if (userIndex === -1) {
+      return res
+        .status(400)
+        .json({ success: false, error: "You are not in this room" });
+    }
+
+    room.users.splice(userIndex, 1);
+
+    await room.save();
+
+    res.status(200).json({ success: true, room });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }
@@ -149,4 +178,5 @@ module.exports = {
   deleteAccount,
   getMe,
   getUserRooms,
+  leaveRoom,
 };
