@@ -12,6 +12,7 @@ const { isAuthenticated } = require("../middlewares/authMiddleware");
   router.post("/login", controller.login);
   router.post("/logout", isAuthenticated, controller.logout);
   router.delete("/delete", isAuthenticated, controller.deleteAccount);
+  router.post("/leave/:id", isAuthenticated, controller.leave);
 })();
 
 module.exports = router;
