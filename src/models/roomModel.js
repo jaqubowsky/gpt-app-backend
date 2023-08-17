@@ -7,6 +7,10 @@ const roomSchema = new Schema(
       type: String,
       required: true,
     },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
+    },
     messages: [
       {
         type: Schema.Types.ObjectId,
