@@ -5,6 +5,7 @@ const {
   logout,
   getMe,
   getUserRooms,
+  leaveRoom,
 } = require("../handlers/userHandler.js");
 
 const userController = async () => {
@@ -15,6 +16,7 @@ const userController = async () => {
     login: await login,
     logout: await logout,
     deleteAccount: await deleteAccount,
+    leave: await leaveRoom,
   };
 };
 
