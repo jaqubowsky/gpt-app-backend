@@ -2,12 +2,8 @@ const express = require("express");
 const router = express.Router();
 const roomController = require("../controlers/roomController");
 
-(async () => {
-  const controller = await roomController();
-
-  router.post("/create", controller.create);
-  router.get("/messages/:id", controller.getMessages);
-  router.post("/add/:id", controller.addUser);
-})();
+router.post("/create", roomController.createRoom);
+router.get("/messages/:id", roomController.getRoomMessages);
+router.post("/add/:id", roomController.addUserToRoom);
 
 module.exports = router;
