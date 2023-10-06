@@ -34,11 +34,11 @@ const getRoomMessages = async (id) => {
   }
 };
 
-const addUserToRoom = async (id, email) => {
+const addUserToRoom = async (roomId, email) => {
   try {
-    const room = await Room.findById(id).exec();
+    const room = await Room.findById(roomId).exec();
 
-    if (!id) {
+    if (!roomId) {
       throw new Error("Room id is required");
     }
 
@@ -56,11 +56,7 @@ const addUserToRoom = async (id, email) => {
       throw new Error("User not found");
     }
 
-    if (user._id.equals(req.user.id)) {
-      throw new Error("You cannot add yourself to a room you own");
-    }
-
-    if (room.users.includes(user._id)) {
+    if (room.users.includes(user.id)) {
       throw new Error("User already in room");
     }
 
