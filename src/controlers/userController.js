@@ -121,9 +121,10 @@ const getUserRooms = async (req, res) => {
 
 const leaveRoom = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id: userId } = req.user;
+    const { id: roomId } = req.params;
 
-    await userService.leaveRoom(id);
+    const room = await userService.leaveRoom(userId, roomId);
 
     res.status(200).json({ success: true, room });
   } catch (err) {

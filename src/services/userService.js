@@ -61,16 +61,12 @@ const getUserRooms = async (id) => {
   }
 };
 
-const leaveRoom = async (id) => {
+const leaveRoom = async (userId, id) => {
   try {
     const room = await Room.findById(id).populate("users").exec();
 
-    if (!room) {
-      throw new Error("Room not found");
-    }
-
     const userIndex = room.users.findIndex(
-      (user) => user._id.toHexString() === req.user.id.toHexString()
+      (user) => user._id.toHexString() === userId.toHexString()
     );
 
     if (userIndex === -1) {
@@ -80,6 +76,8 @@ const leaveRoom = async (id) => {
     room.users.splice(userIndex, 1);
 
     await room.save();
+
+    return room;
   } catch (err) {
     throw new Error(err.message);
   }
