@@ -1,4 +1,10 @@
+const { z } = require("zod");
 const roomService = require("../services/roomService.js");
+
+const emailSchema = z.string().email("Invalid email provided. Try again.");
+const mongoIdSchema = z
+  .string()
+  .regex(/^[0-9a-fA-F]{24}$/, "Invalid room id provided. Try again.");
 
 const createRoom = async (req, res) => {
   try {
@@ -26,10 +32,21 @@ const getRoomMessages = async (req, res) => {
 
 const addUserToRoom = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id: roomId } = req.params;
     const { email } = req.body;
 
-    const room = await roomService.addUserToRoom(id, email);
+    const emailResult = emailSchema.safeParse(email);
+    const idResult = mongoIdSchema.safeParse(roomId);
+
+    if (!emailResult.success) {
+      throw new Error(emailResult.error.issues[0].message);
+    }
+
+    if (!idResult.success) {
+      throw new Error(idResult.error.issues[0].message);
+    }
+
+    const room = await roomService.addUserToRoom(roomId, email);
 
     res.status(200).json({ success: true, room });
   } catch (err) {
